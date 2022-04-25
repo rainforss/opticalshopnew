@@ -1,0 +1,33 @@
+query Eyewears {
+  eyewearCollection(limit: 4) {
+    items {
+      sys {
+        id
+      }
+      name
+      price
+      picturesCollection {
+        items {
+          url
+          description
+        }
+      }
+    }
+  }
+}
+
+query Eyewear($id: String!) {
+  eyewear(id: $id) {
+    sys {
+      id
+    }
+    name
+    price
+    picturesCollection {
+      items {
+        url
+        description
+      }
+    }
+  }
+}
