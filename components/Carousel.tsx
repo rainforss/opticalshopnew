@@ -1,7 +1,8 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
-import { Box, Flex, IconButton, Image } from "@chakra-ui/react";
+import { Box, Flex, IconButton } from "@chakra-ui/react";
 import { AnimatePresence, motion, Variants } from "framer-motion";
 import * as React from "react";
+import Image from "next/image";
 
 interface ICarouselProps {
   images: Array<{ src: string; alt: string }>;
@@ -71,7 +72,13 @@ const Carousel: React.FunctionComponent<ICarouselProps> = ({ images }) => {
                   transition={{ duration: 0.3 }}
                   style={{ width: "100%", height: "100%" }}
                 >
-                  <Image alt={i.alt} src={i.src} loading="eager" />
+                  <Image
+                    alt={i.alt}
+                    src={i.src}
+                    width={1080}
+                    height={607}
+                    loading="eager"
+                  />
                 </motion.div>
               );
           })}
