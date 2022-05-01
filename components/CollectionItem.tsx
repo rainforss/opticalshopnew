@@ -1,10 +1,9 @@
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import * as React from "react";
-import { EyewearQuery } from "../queries/generated";
 import Image from "next/image";
 
 interface ICollectionItemProps {
-  eyewear?: EyewearQuery["eyewear"] | null;
+  eyewear: any;
 }
 
 const CollectionItem: React.FunctionComponent<ICollectionItemProps> = ({
@@ -15,18 +14,18 @@ const CollectionItem: React.FunctionComponent<ICollectionItemProps> = ({
       <Box w={{ base: "100%", sm: "50%", lg: "25%" }} px={4}>
         {eyewear && (
           <Image
-            src={eyewear.picturesCollection!.items[0]!.url!}
-            alt={eyewear.picturesCollection!.items[0]!.description!}
+            src={`https:${eyewear.fields.pictures[0].fields.file.url}`}
+            alt={eyewear.fields.pictures[0].fields.title}
             width="300"
             height="200"
           />
         )}
         <Flex flexDir="column" mt={8}>
           <Heading as="h6" fontSize="1.1rem" fontWeight="normal">
-            {eyewear.name}
+            {eyewear.fields.name}
           </Heading>
           <Text as="strong" fontSize="1.3rem">
-            ${eyewear.price}
+            ${eyewear.fields.price}
           </Text>
         </Flex>
       </Box>

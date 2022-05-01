@@ -15,12 +15,20 @@ export type User = {
   password: string;
 };
 
+export type CurrentUser = {
+  email: string;
+  name: string;
+  id: string;
+  isAdmin: boolean;
+};
+
 declare module "iron-session" {
   interface IronSessionData {
     user?: {
       id: string;
       email: string;
       name: string;
+      isAdmin: boolean;
     };
   }
 }
@@ -46,6 +54,7 @@ const loginRoute = async (req: NextApiRequest, res: NextApiResponse) => {
       id: user._id.toString(),
       email: user.email,
       name: user.name,
+      isAdmin: user.isAdmin,
     };
     await req.session.save();
     await dbDisconnect();

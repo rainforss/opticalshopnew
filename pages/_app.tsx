@@ -1,7 +1,5 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
-import { Provider } from "urql";
-import { client } from "../utils/urqlClient";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import "@fontsource/saira";
 import "@fontsource/saira-semi-condensed";
@@ -25,11 +23,9 @@ const theme = extendTheme({
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <Provider value={client}>
-      <ChakraProvider resetCSS theme={theme}>
-        <Component {...pageProps} />
-      </ChakraProvider>
-    </Provider>
+    <ChakraProvider resetCSS theme={theme}>
+      <Component {...pageProps} />
+    </ChakraProvider>
   );
 }
 

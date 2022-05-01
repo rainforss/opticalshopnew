@@ -1,14 +1,16 @@
-import { Box, Heading, Text } from "@chakra-ui/react";
+import { Box, Heading } from "@chakra-ui/react";
 import * as React from "react";
+import { CurrentUser } from "../pages/api/user/login";
 import Banner from "./Banner";
 import Footer from "./Footer";
 import Header from "./Header";
 
 interface ILayoutProps {
   children: React.ReactNode;
+  user?: CurrentUser;
 }
 
-const Layout: React.FunctionComponent<ILayoutProps> = ({ children }) => {
+const Layout: React.FunctionComponent<ILayoutProps> = ({ user, children }) => {
   return (
     <Box w="100%" bgColor="#f3f3f3">
       <Banner>
@@ -23,7 +25,7 @@ const Layout: React.FunctionComponent<ILayoutProps> = ({ children }) => {
           Free Shipping to the USA/Canada. USE CODE: FUSACAD
         </Heading>
       </Banner>
-      <Header />
+      <Header user={user} />
       {children}
       <Footer />
     </Box>

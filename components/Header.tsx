@@ -12,11 +12,14 @@ import {
 } from "@chakra-ui/react";
 import NavLink from "next/link";
 import * as React from "react";
+import { CurrentUser } from "../pages/api/user/login";
 import Navigation from "./Navigation";
 
-interface IHeaderProps {}
+interface IHeaderProps {
+  user?: CurrentUser;
+}
 
-const Header: React.FunctionComponent<IHeaderProps> = (props) => {
+const Header: React.FunctionComponent<IHeaderProps> = ({ user }) => {
   return (
     <Box bgColor="white">
       <Flex w="60%" mx="auto" py={12} justify="space-between">
@@ -46,19 +49,25 @@ const Header: React.FunctionComponent<IHeaderProps> = (props) => {
             <Heading as="h5" fontSize="2rem" mb={4} color="heading">
               Eye Professionals that Care
             </Heading>
-            <Text as="p" textAlign="right">
-              <NavLink href="/login" passHref>
-                <Link fontSize="1.2rem" fontWeight="bold">
-                  Sign in
-                </Link>
-              </NavLink>{" "}
-              or{" "}
-              <NavLink href="/register" passHref>
-                <Link fontSize="1.2rem" fontWeight="bold">
-                  Create an Account
-                </Link>
-              </NavLink>
-            </Text>
+            {!!user ? (
+              <Text as="p" textAlign="right">
+                Welcome back, <Text as="strong">{user.name}</Text>
+              </Text>
+            ) : (
+              <Text as="p" textAlign="right">
+                <NavLink href="/login" passHref>
+                  <Link fontSize="1.2rem" fontWeight="bold">
+                    Sign in
+                  </Link>
+                </NavLink>{" "}
+                or{" "}
+                <NavLink href="/register" passHref>
+                  <Link fontSize="1.2rem" fontWeight="bold">
+                    Create an Account
+                  </Link>
+                </NavLink>
+              </Text>
+            )}
           </Box>
           <InputGroup size="md">
             <Input

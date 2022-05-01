@@ -1,13 +1,13 @@
 import { Box, Flex, Heading, Link } from "@chakra-ui/react";
+import { Entry } from "contentful-management";
 import NavLink from "next/link";
 import * as React from "react";
-import { EyewearsQuery } from "../queries/generated";
 import CollectionItem from "./CollectionItem";
 
 interface ICollectionProps {
   collectionTitle: string;
   collectionUrl: string;
-  collectionItems: EyewearsQuery["eyewearCollection"];
+  collectionItems: Entry[];
 }
 
 const Collection: React.FunctionComponent<ICollectionProps> = (props) => {
@@ -25,7 +25,7 @@ const Collection: React.FunctionComponent<ICollectionProps> = (props) => {
         </NavLink>
       </Flex>
       <Flex>
-        {props.collectionItems.items.map((e) => (
+        {props.collectionItems.map((e) => (
           <CollectionItem eyewear={e} key={e?.sys.id} />
         ))}
       </Flex>
