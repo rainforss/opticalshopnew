@@ -54,12 +54,15 @@ const Home: NextPage<HomePageProps> = ({ user, eyewears }) => {
 export const getServerSideProps = withSessionSsr(
   async function getServerSideProps({ req }) {
     const result = await axios.get(
-      "http://localhost:3000/api/eyewear?pageSize=4&pageNumber=1"
+      `${
+        process.env.NODE_ENV === "production"
+          ? process.env.HOST
+          : "http://localhost:3000"
+      }/api/eyewear?pageSize=4&pageNumber=1`
     );
     if (!isAuthenticated(req) || !isAdmin(req))
       return {
         props: {
-          user: undefined,
           eyewears: result.data,
         },
       };

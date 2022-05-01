@@ -23,12 +23,12 @@ export function withSessionRoute(handler: NextApiHandler) {
 }
 
 // Theses types are compatible with InferGetStaticPropsType https://nextjs.org/docs/basic-features/data-fetching#typescript-use-getstaticprops
-export function withSessionSsr<
-  P extends { [key: string]: unknown } = { [key: string]: unknown }
->(
+export function withSessionSsr(
   handler: (
     context: GetServerSidePropsContext
-  ) => GetServerSidePropsResult<P> | Promise<GetServerSidePropsResult<P>>
+  ) =>
+    | GetServerSidePropsResult<{ eyewears?: any; user?: any }>
+    | Promise<GetServerSidePropsResult<{ eyewears?: any; user?: any }>>
 ) {
   return withIronSessionSsr(handler, sessionOptions);
 }
