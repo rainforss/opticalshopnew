@@ -71,7 +71,7 @@ const Carousel: React.FunctionComponent<ICarouselProps> = ({ images }) => {
                   transition={{ duration: 0.3 }}
                   style={{ width: "100%", height: "100%" }}
                 >
-                  <Image alt={i.alt} src={i.src} />
+                  <Image alt={i.alt} src={i.src} loading="eager" />
                 </motion.div>
               );
           })}
