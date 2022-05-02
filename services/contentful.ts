@@ -37,9 +37,9 @@ export const updateEyewear = async (
     const eyewear = await environment.getEntry(id);
     eyewear.fields.stripeProduct = { "en-US": stripeProduct };
     eyewear.fields.stripePrice = { "en-US": stripePrice };
-    await eyewear.update();
-    const updatedEyewear = await eyewear.publish();
-    return updatedEyewear;
+    const updatedEyewear = await eyewear.update();
+    const publishedEyewear = await updatedEyewear.publish();
+    return publishedEyewear;
   } catch (error) {
     throw error;
   }

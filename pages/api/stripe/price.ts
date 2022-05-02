@@ -12,7 +12,6 @@ const priceRoute = async (req: NextApiRequest, res: NextApiResponse) => {
           authorizationHeader!.split(" ")[1],
           "base64"
         ).toString();
-        console.log(decodedToken);
         if (decodedToken !== process.env.CONTENTFUL_CMA_TOKEN + ":") {
           throw Error("Not authenticated");
         }
@@ -25,14 +24,12 @@ const priceRoute = async (req: NextApiRequest, res: NextApiResponse) => {
             shippable: true,
           };
           const newProduct = await createProduct(newProductParams);
-          console.log(newProduct);
           const newPriceParams: Stripe.PriceCreateParams = {
             currency: "cad",
             product: newProduct.id,
             unit_amount: eyewear.fields.price * 100,
           };
           const newPrice = await createPrice(newPriceParams);
-          console.log(newPrice);
           const updatedEyewear = await updateEyewear(
             eyewear.sys.id,
             newProduct.id,
