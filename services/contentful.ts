@@ -35,8 +35,8 @@ export const updateEyewear = async (
     const space = await client.getSpace("ku8ywade9k6u");
     const environment = await space.getEnvironment("master");
     const eyewear = await environment.getEntry(id);
-    eyewear.fields.stripeProduct["en-US"] = stripeProduct;
-    eyewear.fields.stripePrice["en-US"] = stripePrice;
+    eyewear.fields.stripeProduct = { "en-US": stripeProduct };
+    eyewear.fields.stripePrice = { "en-US": stripePrice };
     await eyewear.update();
     const updatedEyewear = await eyewear.publish();
     return updatedEyewear;
