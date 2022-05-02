@@ -1,7 +1,12 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import Stripe from "stripe";
 import { getEyewearById, updateEyewear } from "../../../services/contentful";
-import { createPrice, createProduct } from "../../../services/stripe";
+import {
+  createPrice,
+  createProduct,
+  getPrice,
+  updatePrice,
+} from "../../../services/stripe";
 
 const priceRoute = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -39,8 +44,25 @@ const priceRoute = async (req: NextApiRequest, res: NextApiResponse) => {
           return res.status(200).json({ ok: true });
         }
 
-        console.log("No actions needed");
-        return res.status(200).json({ message: "No actions needed." });
+        const stripePrice = await getPrice(eyewear.fields.stripePrice);
+        if (stripePrice.unit_amount === eyewear.fields.price * 100) {
+          console.log("No actions needed");
+          return res.status(200).json({ message: "No actions needed." });
+        }
+
+        await updatePrice(eyewear.fields.stripePrice, { active: false });
+        const newPrice = await createPrice({
+          currency: "cad",
+          product: eyewear.fields.stripeProduct,
+          unit_amount: eyewear.fields.price * 100,
+        });
+        await updateEyewear(
+          eyewear.sys.id,
+          eyewear.fields.stripeProduct,
+          newPrice.id
+        );
+
+        return res.status(200).json({ message: "Price updated." });
       case "GET":
         return res.status(200).json({ ok: true });
       default:
