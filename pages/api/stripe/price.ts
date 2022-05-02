@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import Stripe from "stripe";
-import { getEyewearById } from "../../../services/contentful";
+import { getEyewearById, updateEyewear } from "../../../services/contentful";
 import { createPrice, createProduct } from "../../../services/stripe";
 
 const priceRoute = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -33,6 +33,7 @@ const priceRoute = async (req: NextApiRequest, res: NextApiResponse) => {
           };
           const newPrice = await createPrice(newPriceParams);
           console.log(newPrice);
+          await updateEyewear(eyewear.sys.id, newProduct.id, newPrice.id);
           return res.status(200).json({ ok: true });
         }
 
