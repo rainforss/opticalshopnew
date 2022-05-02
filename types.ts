@@ -25,7 +25,8 @@ export type Eyewear = {
     row: number;
     column: number;
     pictures: Array<Picture>;
-    stripePaymentLink: string;
+    stripeProduct: string;
+    stripePrice: string;
   };
 };
 

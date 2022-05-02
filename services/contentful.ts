@@ -1,5 +1,6 @@
 import { createClient, EntryProps, KeyValueMap } from "contentful-management";
 import { createClient as createCdnClient } from "contentful";
+import { Eyewear } from "../types";
 
 export const client = createClient({
   accessToken: process.env.CONTENTFUL_CMA_TOKEN!,
@@ -25,6 +26,25 @@ export const createEyewear = async (
   }
 };
 
+export const updateEyewear = async (
+  id: string,
+  stripeProduct: string,
+  stripePrice: string
+) => {
+  try {
+    const space = await client.getSpace("ku8ywade9k6u");
+    const environment = await space.getEnvironment("master");
+    const eyewear = await environment.getEntry(id);
+    eyewear.fields.stripeProduct["en-US"] = stripeProduct;
+    eyewear.fields.stripePrice["en-US"] = stripePrice;
+    await eyewear.update();
+    const updatedEyewear = await eyewear.publish();
+    return updatedEyewear;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const getEyewears = async (pageSize: number, pageNumber: number) => {
   try {
     const eyewears = await cdnClient.getEntries({
@@ -42,7 +62,7 @@ export const getEyewears = async (pageSize: number, pageNumber: number) => {
 
 export const getEyewearById = async (eyewearId: string) => {
   try {
-    const eyewear = await cdnClient.getEntry(eyewearId);
+    const eyewear: Eyewear = await cdnClient.getEntry(eyewearId);
     return eyewear;
   } catch (error) {
     throw error;
