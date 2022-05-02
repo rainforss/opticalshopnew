@@ -33,7 +33,12 @@ const priceRoute = async (req: NextApiRequest, res: NextApiResponse) => {
           };
           const newPrice = await createPrice(newPriceParams);
           console.log(newPrice);
-          await updateEyewear(eyewear.sys.id, newProduct.id, newPrice.id);
+          const updatedEyewear = await updateEyewear(
+            eyewear.sys.id,
+            newProduct.id,
+            newPrice.id
+          );
+          console.log(updatedEyewear);
           return res.status(200).json({ ok: true });
         }
 
