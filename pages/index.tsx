@@ -1,6 +1,5 @@
 import { Box } from "@chakra-ui/react";
 import axios from "axios";
-import { Entry, EntryProps, KeyValueMap } from "contentful-management";
 import type { NextPage } from "next";
 import Booking from "../components/Booking";
 import Carousel from "../components/Carousel";

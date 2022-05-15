@@ -15,6 +15,8 @@ const BreadCrumb: React.FunctionComponent<IBreadCrumbProps> = (props) => {
   if (router.asPath.split("/").length < 3) {
     return null;
   }
+  const pathWithoutQuery = router.asPath.split("?").slice(0, 1).join();
+  console.log(pathWithoutQuery);
   return (
     <Box width="60%" mx="auto" my={8}>
       <Breadcrumb
@@ -24,25 +26,25 @@ const BreadCrumb: React.FunctionComponent<IBreadCrumbProps> = (props) => {
         <BreadcrumbItem>
           <BreadcrumbLink href="/">HOME</BreadcrumbLink>
         </BreadcrumbItem>
-        {router.asPath
+        {pathWithoutQuery
           .split("/")
           .slice(1)
           .map((p, index) => (
             <BreadcrumbItem key={p}>
               <BreadcrumbLink
-                href={`/${router.asPath
+                href={`/${pathWithoutQuery
                   .split("/")
                   .slice(1, index + 2)
                   .join("/")}`}
                 isCurrentPage={
-                  `/${router.asPath
+                  `/${pathWithoutQuery
                     .split("/")
                     .slice(1, index + 2)
-                    .join("/")}` === router.asPath
+                    .join("/")}` === pathWithoutQuery
                 }
               >
                 {p.includes("_")
-                  ? p.split("_")[0].toUpperCase()
+                  ? decodeURIComponent(p).split("_")[0].toUpperCase()
                   : p.toUpperCase()}
               </BreadcrumbLink>
             </BreadcrumbItem>

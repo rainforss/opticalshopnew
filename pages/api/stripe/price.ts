@@ -8,6 +8,7 @@ import {
   updatePrice,
 } from "../../../services/stripe";
 
+//This endpoint is used to receive data from Contentful webhook upon published changes of eyewears
 const priceRoute = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     switch (req.method) {
@@ -20,7 +21,11 @@ const priceRoute = async (req: NextApiRequest, res: NextApiResponse) => {
         if (decodedToken !== process.env.CONTENTFUL_CMA_TOKEN + ":") {
           throw Error("Not authenticated");
         }
+
+        //Get the eyewear record by ID from Contentful
         const eyewear = await getEyewearById(req.body.id);
+
+        //If no stripe product or price information is connected, create a new product with price in Stripe
         if (!eyewear.fields.stripeProduct || !eyewear.fields.stripePrice) {
           const newProductParams: Stripe.ProductCreateParams = {
             id: eyewear.sys.id,
@@ -40,16 +45,16 @@ const priceRoute = async (req: NextApiRequest, res: NextApiResponse) => {
             newProduct.id,
             newPrice.id
           );
-          console.log(updatedEyewear);
           return res.status(200).json({ ok: true });
         }
 
+        //If there is no change in stripe price, disregard the webhook call
         const stripePrice = await getPrice(eyewear.fields.stripePrice);
         if (stripePrice.unit_amount === eyewear.fields.price * 100) {
-          console.log("No actions needed");
           return res.status(200).json({ message: "No actions needed." });
         }
 
+        //If the price is changed, update the Stripe price object and update Contentful eyewear with new price object id
         await updatePrice(eyewear.fields.stripePrice, { active: false });
         const newPrice = await createPrice({
           currency: "cad",

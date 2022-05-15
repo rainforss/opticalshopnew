@@ -15,15 +15,16 @@ const eyewearRoute = async (req: NextApiRequest, res: NextApiResponse) => {
           throw Error("Not authorized");
         }
         const transformedData = transformToLocalizedObject(req.body);
-        console.log(transformedData);
         const createdEyewear = await createEyewear({ fields: transformedData });
 
         return res.status(200).json(createdEyewear);
       case "GET":
-        const { pageSize, pageNumber } = req.query;
+        const { pageSize, pageNumber, collectionName, filter } = req.query;
         const eyewears = await getEyewears(
           parseInt(pageSize as string),
-          parseInt(pageNumber as string)
+          parseInt(pageNumber as string),
+          collectionName as string,
+          filter as string
         );
         return res.status(200).json(eyewears);
       default:

@@ -45,17 +45,26 @@ export const updateEyewear = async (
   }
 };
 
-export const getEyewears = async (pageSize: number, pageNumber: number) => {
+export const getEyewears = async (
+  pageSize: number,
+  pageNumber: number,
+  eyewearType?: string,
+  filter?: string
+) => {
   try {
     const eyewears = await cdnClient.getEntries({
       content_type: "eyewear",
-      order: "sys.createdAt",
+      "fields.eyewearType": eyewearType,
+      "fields.material": filter,
+      order: "-fields.price",
       limit: pageSize,
       skip: (pageNumber - 1) * pageSize,
       include: 1,
     });
+
     return eyewears;
   } catch (error) {
+    console.log(error);
     throw error;
   }
 };

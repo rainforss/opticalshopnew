@@ -9,9 +9,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
-import { Form, Formik, FormikProps } from "formik";
 import Image from "next/image";
-import { useRouter } from "next/router";
 import { NextPage } from "next/types";
 import { ParsedUrlQuery } from "querystring";
 import * as React from "react";
@@ -20,6 +18,7 @@ import Layout from "../../../components/Layout";
 import { withSessionSsr } from "../../../middleware/session";
 import { getEyewearById } from "../../../services/contentful";
 import { Eyewear } from "../../../types";
+import { isAuthenticated, isAdmin } from "../../../utils/authentication";
 import { CurrentUser } from "../../api/user/login";
 
 interface IParams extends ParsedUrlQuery {
@@ -33,9 +32,8 @@ interface IEyeglassesPageProps {
 
 const EyeglassesPage: NextPage<IEyeglassesPageProps> = ({ eyewear, user }) => {
   const description = documentToHtmlString(eyewear.fields.description);
-  console.log(eyewear);
   return (
-    <Layout user={user}>
+    <Layout>
       <BreadCrumb />
       <Box as="hr" w="80%" borderBottom="2px solid grey" mx="auto"></Box>
       <Box w="80%" mx="auto" py={16}>
@@ -77,7 +75,9 @@ const EyeglassesPage: NextPage<IEyeglassesPageProps> = ({ eyewear, user }) => {
             <Flex py={8} flexDir={{ base: "column" }} style={{ gap: "1rem" }}>
               <Text>Color Group: {eyewear.fields.colorGroup}</Text>
               <Text display="flex" alignItems="center">
-                <Text mr={4}>Color:</Text>{" "}
+                <Text as="span" mr={4}>
+                  Color:
+                </Text>{" "}
                 <Text
                   as="span"
                   bgColor={eyewear.fields.frameColor}
@@ -103,7 +103,17 @@ export const getServerSideProps = withSessionSsr(
   async function getServerSideProps({ req, params }) {
     const { eyeglassesId } = params as IParams;
     const id = eyeglassesId.split("_")[1];
+
     const eyewear = await getEyewearById(id);
+    console.log(eyewear);
+    if (!isAuthenticated(req) || !isAdmin(req)) {
+      return {
+        props: {
+          eyewear,
+        },
+      };
+    }
+
     return {
       props: {
         eyewear,

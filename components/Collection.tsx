@@ -7,7 +7,7 @@ import CollectionItem from "./CollectionItem";
 interface ICollectionProps {
   collectionTitle: string;
   collectionUrl: string;
-  collectionItems: Entry[];
+  collectionItems: any[];
 }
 
 const Collection: React.FunctionComponent<ICollectionProps> = (props) => {
