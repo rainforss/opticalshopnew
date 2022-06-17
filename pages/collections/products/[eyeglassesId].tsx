@@ -90,6 +90,11 @@ const EyeglassesPage: NextPage<IEyeglassesPageProps> = ({ eyewear, user }) => {
                 Size: {eyewear.fields.eyeSize} - {eyewear.fields.bridgeWidth} -{" "}
                 {eyewear.fields.templeLength}
               </Text>
+              <Text>Material: {eyewear.fields.material}</Text>
+              <Text>Frame Shape: {eyewear.fields.frameShape}</Text>
+              <Text>Frame Type: {eyewear.fields.frameType}</Text>
+              <Text>Hinge Type: {eyewear.fields.hingeType}</Text>
+              <Text>Nose Pads: {eyewear.fields.nosePads ? "YES" : "NO"}</Text>
             </Flex>
             <Box dangerouslySetInnerHTML={{ __html: description }}></Box>
           </Flex>
@@ -105,7 +110,6 @@ export const getServerSideProps = withSessionSsr(
     const id = eyeglassesId.split("_")[1];
 
     const eyewear = await getEyewearById(id);
-    console.log(eyewear);
     if (!isAuthenticated(req) || !isAdmin(req)) {
       return {
         props: {
