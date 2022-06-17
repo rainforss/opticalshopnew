@@ -5,14 +5,14 @@ import { useRouter } from "next/router";
 import { ParsedUrlQuery } from "querystring";
 import * as React from "react";
 import ReactPaginate from "react-paginate";
-import { ICharacteristics } from "../../../@types/generated/contentful";
-import BreadCrumb from "../../../components/BreadCrumb";
-import Inventory from "../../../components/Inventory";
-import Layout from "../../../components/Layout";
-import { withSessionSsr } from "../../../middleware/session";
-import { isAuthenticated, isAdmin } from "../../../utils/authentication";
-import { capitalize } from "../../../utils/capitalize";
-import { CurrentUser } from "../../api/user/login";
+import { ICharacteristics } from "../../../../@types/generated/contentful";
+import BreadCrumb from "../../../../components/BreadCrumb";
+import Inventory from "../../../../components/Inventory";
+import Layout from "../../../../components/Layout";
+import { withSessionSsr } from "../../../../middleware/session";
+import { isAuthenticated, isAdmin } from "../../../../utils/authentication";
+import { capitalize } from "../../../../utils/capitalize";
+import { CurrentUser } from "../../../api/user/login";
 
 interface IFilteredCollectionPageProps {
   user?: CurrentUser;

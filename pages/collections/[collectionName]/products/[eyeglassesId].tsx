@@ -13,13 +13,13 @@ import Image from "next/image";
 import { NextPage } from "next/types";
 import { ParsedUrlQuery } from "querystring";
 import * as React from "react";
-import BreadCrumb from "../../../components/BreadCrumb";
-import Layout from "../../../components/Layout";
-import { withSessionSsr } from "../../../middleware/session";
-import { getEyewearById } from "../../../services/contentful";
-import { Eyewear } from "../../../types";
-import { isAuthenticated, isAdmin } from "../../../utils/authentication";
-import { CurrentUser } from "../../api/user/login";
+import BreadCrumb from "../../../../components/BreadCrumb";
+import Layout from "../../../../components/Layout";
+import { withSessionSsr } from "../../../../middleware/session";
+import { getEyewearById } from "../../../../services/contentful";
+import { Eyewear } from "../../../../types";
+import { isAuthenticated, isAdmin } from "../../../../utils/authentication";
+import { CurrentUser } from "../../../api/user/login";
 
 interface IParams extends ParsedUrlQuery {
   eyeglassesId: string;

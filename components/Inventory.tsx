@@ -13,7 +13,6 @@ const Inventory: React.FunctionComponent<IInventoryProps> = ({
   eyewearCollection,
   characteristics,
 }) => {
-  console.log(characteristics);
   return (
     <Flex py={4}>
       <Flex w="20%" flexDirection="column">

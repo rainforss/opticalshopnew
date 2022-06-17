@@ -16,7 +16,6 @@ const BreadCrumb: React.FunctionComponent<IBreadCrumbProps> = (props) => {
     return null;
   }
   const pathWithoutQuery = router.asPath.split("?").slice(0, 1).join();
-  console.log(pathWithoutQuery);
   return (
     <Box width="60%" mx="auto" my={8}>
       <Breadcrumb

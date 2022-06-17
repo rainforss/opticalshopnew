@@ -14,7 +14,9 @@ const CollectionItem: React.FunctionComponent<ICollectionItemProps> = ({
     return (
       <Box w={{ base: "100%", sm: "50%", lg: "25%" }} px={4} pb={12}>
         <Link
-          href={`/collections/products/${eyewear.fields.name}_${eyewear.sys.id}`}
+          href={`/collections/${eyewear.fields.eyewearType.toLowerCase()}/products/${
+            eyewear.fields.name
+          }_${eyewear.sys.id}`}
         >
           <Box>
             {eyewear && (
