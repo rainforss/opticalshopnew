@@ -1,16 +1,30 @@
 import { createClient, EntryProps, KeyValueMap } from "contentful-management";
-import { createClient as createCdnClient } from "contentful";
+
 import { Eyewear } from "../types";
+import { ICharacteristics } from "../@types/generated/contentful";
 
 export const client = createClient({
   accessToken: process.env.CONTENTFUL_CMA_TOKEN!,
 });
 
-const cdnClient = createCdnClient({
+const cdnClient = require("contentful").createClient({
   accessToken: process.env.CONTENTFUL_CDN_TOKEN!,
   space: "ku8ywade9k6u",
   environment: "master",
 });
+
+export const getAllCharacteristics = async () => {
+  try {
+    const characteristics: ICharacteristics[] = (
+      await cdnClient.getEntries({
+        content_type: "characteristics",
+      })
+    ).items;
+    return characteristics;
+  } catch (error) {
+    throw error;
+  }
+};
 
 export const createEyewear = async (
   data: Omit<EntryProps<KeyValueMap>, "sys">

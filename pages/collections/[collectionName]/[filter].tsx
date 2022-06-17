@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { ParsedUrlQuery } from "querystring";
 import * as React from "react";
 import ReactPaginate from "react-paginate";
+import { ICharacteristics } from "../../../@types/generated/contentful";
 import BreadCrumb from "../../../components/BreadCrumb";
 import Inventory from "../../../components/Inventory";
 import Layout from "../../../components/Layout";
@@ -16,6 +17,7 @@ import { CurrentUser } from "../../api/user/login";
 interface IFilteredCollectionPageProps {
   user?: CurrentUser;
   eyewears: any;
+  characteristics: ICharacteristics[];
 }
 
 interface IParams extends ParsedUrlQuery {
@@ -26,6 +28,7 @@ interface IParams extends ParsedUrlQuery {
 const FilteredCollectionPage: NextPage<IFilteredCollectionPageProps> = ({
   user,
   eyewears,
+  characteristics,
 }) => {
   const router = useRouter();
   const { pageNumber } = router.query;
@@ -33,7 +36,10 @@ const FilteredCollectionPage: NextPage<IFilteredCollectionPageProps> = ({
     <Layout user={user}>
       <BreadCrumb />
       <Box w="60%" mx="auto">
-        <Inventory eyewearCollection={eyewears.items} />
+        <Inventory
+          eyewearCollection={eyewears.items}
+          characteristics={characteristics}
+        />
       </Box>
       <ReactPaginate
         className="pagination"
@@ -67,10 +73,18 @@ export const getServerSideProps = withSessionSsr(
         filter
       )}`
     );
+    const characteristicResult = await axios.get(
+      `${
+        process.env.NODE_ENV === "production"
+          ? process.env.HOST
+          : "http://localhost:3000"
+      }/api/characteristic`
+    );
     if (!isAuthenticated(req) || !isAdmin(req))
       return {
         props: {
           eyewears: result.data,
+          characteristics: characteristicResult.data,
         },
       };
 
@@ -78,6 +92,7 @@ export const getServerSideProps = withSessionSsr(
       props: {
         user: req.session.user,
         eyewears: result.data,
+        characteristics: characteristicResult.data,
       },
     };
   }
