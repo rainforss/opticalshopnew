@@ -78,14 +78,37 @@ const Filter: React.FunctionComponent<IFilterProps> = ({ characteristics }) => {
               ))}
               <Button
                 type="submit"
-                my="4rem"
+                mt="4rem"
                 bgColor="#173f5e"
                 color="white"
                 px="2rem"
                 py="1.5rem"
                 isLoading={props.isSubmitting}
+                isDisabled={props.isSubmitting}
               >
                 Apply
+              </Button>
+              <Button
+                mt="2rem"
+                bgColor="#173f5e"
+                color="white"
+                px="2rem"
+                py="1.5rem"
+                isLoading={props.isSubmitting}
+                isDisabled={props.isSubmitting}
+                onClick={() =>
+                  props.resetForm({
+                    values: {
+                      material: [],
+                      hingeType: [],
+                      frameType: [],
+                      frameShape: [],
+                      colorGroup: [],
+                    },
+                  })
+                }
+              >
+                Clear Filters
               </Button>
             </Form>
           );
