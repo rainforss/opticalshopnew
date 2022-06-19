@@ -3,6 +3,7 @@ import type { AppProps } from "next/app";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import "@fontsource/saira";
 import "@fontsource/saira-semi-condensed";
+import { useRouter } from "next/router";
 
 const theme = extendTheme({
   fonts: {
@@ -22,9 +23,10 @@ const theme = extendTheme({
 });
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const router = useRouter();
   return (
     <ChakraProvider resetCSS theme={theme}>
-      <Component {...pageProps} />
+      <Component {...pageProps} key={router.asPath} />
     </ChakraProvider>
   );
 }

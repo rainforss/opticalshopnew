@@ -69,7 +69,7 @@ const Header: React.FunctionComponent<IHeaderProps> = ({ user }) => {
               </Text>
             )}
           </Box>
-          <InputGroup size="md">
+          {/* <InputGroup size="md">
             <Input
               pr="4.5rem"
               type="text"
@@ -80,7 +80,7 @@ const Header: React.FunctionComponent<IHeaderProps> = ({ user }) => {
                 Search
               </Button>
             </InputRightElement>
-          </InputGroup>
+          </InputGroup> */}
         </Flex>
       </Flex>
       <Navigation />

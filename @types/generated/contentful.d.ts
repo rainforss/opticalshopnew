@@ -7,6 +7,9 @@ export interface ICharacteristicsFields {
   /** Name */
   name: string;
 
+  /** Schema Name */
+  schemaName: string;
+
   /** Options */
   options: string[];
 }

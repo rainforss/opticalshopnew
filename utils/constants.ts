@@ -163,3 +163,11 @@ export const NAMED_COLORS = [
   { text: "Dark Slate Gray", value: "#2F4F4F", group: "Grey" },
   { text: "Black", value: "#000000", group: "Grey" },
 ];
+
+export const allowedFilters = [
+  "material",
+  "hingeType",
+  "colorGroup",
+  "frameShape",
+  "frameType",
+];

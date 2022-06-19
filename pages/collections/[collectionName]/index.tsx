@@ -60,7 +60,17 @@ const EyeglassesPage: NextPage<IEyeglassesPageProps> = ({
 export const getServerSideProps = withSessionSsr(
   async function getServerSideProps({ req, params, query }) {
     const { collectionName } = params as IParams;
-    const { pageNumber } = query;
+    const { pageNumber, ...otherQueries } = query;
+    if (collectionName !== "sunglasses" && collectionName !== "eyeglasses") {
+      return {
+        props: {},
+        notFound: true,
+      };
+    }
+    const searchParams = new URLSearchParams();
+    Object.keys(otherQueries).forEach((k) =>
+      searchParams.append(k, otherQueries[k] as string)
+    );
     const result = await axios.get(
       `${
         process.env.NODE_ENV === "production"
@@ -68,7 +78,7 @@ export const getServerSideProps = withSessionSsr(
           : "http://localhost:3000"
       }/api/eyewear?pageSize=16&pageNumber=${
         pageNumber || "1"
-      }&collectionName=${capitalize(collectionName)}`
+      }&collectionName=${capitalize(collectionName)}&${searchParams.toString()}`
     );
     const characteristicResult = await axios.get(
       `${

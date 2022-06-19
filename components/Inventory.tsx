@@ -1,8 +1,11 @@
 import { Box, Flex, Heading, Link, Text } from "@chakra-ui/react";
 import NextLink from "next/link";
+import { useRouter } from "next/router";
 import * as React from "react";
 import { ICharacteristics } from "../@types/generated/contentful";
+import { capitalize } from "../utils/capitalize";
 import CollectionItem from "./CollectionItem";
+import Filter from "./Filter";
 
 interface IInventoryProps {
   eyewearCollection: any[];
@@ -13,34 +16,15 @@ const Inventory: React.FunctionComponent<IInventoryProps> = ({
   eyewearCollection,
   characteristics,
 }) => {
+  const router = useRouter();
+  const { collectionName } = router.query;
   return (
     <Flex py={4}>
-      <Flex w="20%" flexDirection="column">
-        <Heading as="h2" mb={6}>
-          Shop by
-        </Heading>
-        {characteristics.map((c) => (
-          <Flex flexDirection="column" mb={4} key={c.sys.id}>
-            <Text as="strong" mb={2}>
-              {c.fields.name}
-            </Text>
-
-            {c.fields.options.map((o) => (
-              <NextLink
-                key={o}
-                href={{ pathname: `/collections/eyeglasses/acetate` }}
-                passHref
-              >
-                <Link>{o}</Link>
-              </NextLink>
-            ))}
-          </Flex>
-        ))}
-      </Flex>
+      <Filter characteristics={characteristics} />
       <Box w="80%">
         <Flex mb={8}>
           <Heading as="h2" pl={4} fontSize="1.5rem">
-            Eyeglasses
+            {capitalize(collectionName as string)}
           </Heading>
         </Flex>
         <Flex flexWrap="wrap" justify={{ base: "space-between" }}>

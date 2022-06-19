@@ -19,12 +19,12 @@ const eyewearRoute = async (req: NextApiRequest, res: NextApiResponse) => {
 
         return res.status(200).json(createdEyewear);
       case "GET":
-        const { pageSize, pageNumber, collectionName, filter } = req.query;
+        const { pageSize, pageNumber, collectionName, ...others } = req.query;
         const eyewears = await getEyewears(
           parseInt(pageSize as string),
           parseInt(pageNumber as string),
           collectionName as string,
-          filter as string
+          others
         );
         return res.status(200).json(eyewears);
       default:

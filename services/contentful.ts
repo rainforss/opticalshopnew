@@ -2,6 +2,7 @@ import { createClient, EntryProps, KeyValueMap } from "contentful-management";
 
 import { Eyewear } from "../types";
 import { ICharacteristics } from "../@types/generated/contentful";
+import { allowedFilters } from "../utils/constants";
 
 export const client = createClient({
   accessToken: process.env.CONTENTFUL_CMA_TOKEN!,
@@ -63,22 +64,26 @@ export const getEyewears = async (
   pageSize: number,
   pageNumber: number,
   eyewearType?: string,
-  filter?: string
+  filter?: any
 ) => {
   try {
-    const eyewears = await cdnClient.getEntries({
+    const queryObj: any = {
       content_type: "eyewear",
       "fields.eyewearType": eyewearType,
-      "fields.material": filter,
       order: "-fields.price",
       limit: pageSize,
       skip: (pageNumber - 1) * pageSize,
       include: 1,
+    };
+    Object.keys(filter).forEach((k) => {
+      if (allowedFilters.includes(k) && !!filter[k]) {
+        queryObj[`fields.${k}[in]`] = filter[k];
+      }
     });
+    const eyewears = await cdnClient.getEntries(queryObj);
 
     return eyewears;
   } catch (error) {
-    console.log(error);
     throw error;
   }
 };
