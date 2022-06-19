@@ -23,7 +23,7 @@ const eyewearRoute = async (req: NextApiRequest, res: NextApiResponse) => {
         const eyewears = await getEyewears(
           parseInt(pageSize as string),
           parseInt(pageNumber as string),
-          collectionName as string,
+          collectionName[0] as string,
           others
         );
         return res.status(200).json(eyewears);
