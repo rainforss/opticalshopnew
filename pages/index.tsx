@@ -4,18 +4,14 @@ import type { NextPage } from "next";
 import Booking from "../components/Booking";
 import Carousel from "../components/Carousel";
 import Category from "../components/Category";
-import Collection from "../components/Collection";
 import Layout from "../components/Layout";
-import { withSessionSsr } from "../middleware/session";
-import { isAuthenticated, isAdmin } from "../utils/authentication";
 import { CurrentUser } from "./api/user/login";
 
 interface HomePageProps {
   user?: CurrentUser;
-  eyewears: any;
 }
 
-const Home: NextPage<HomePageProps> = ({ user, eyewears }) => {
+const Home: NextPage<HomePageProps> = ({ user }) => {
   const imagesCarousel1 = [
     { alt: "Best optical shop in Edmonton", src: "/best_in_edmonton.jpg" },
     { alt: "Best optical shop in Edmonton", src: "/insurance.jpg" },
@@ -41,38 +37,14 @@ const Home: NextPage<HomePageProps> = ({ user, eyewears }) => {
         <Carousel images={imagesCarousel2} />
       </Box>
       <Box as="hr" w="80%" borderBottom="2px solid grey" mx="auto"></Box>
-      <Collection
-        collectionTitle="Featured Collection"
-        collectionUrl="/eyeglasses"
-        collectionItems={eyewears.items}
-      />
     </Layout>
   );
 };
 
-export const getServerSideProps = withSessionSsr(
-  async function getServerSideProps({ req }) {
-    const result = await axios.get(
-      `${
-        process.env.NODE_ENV === "production"
-          ? process.env.HOST
-          : "http://localhost:3000"
-      }/api/eyewear?pageSize=4&pageNumber=1`
-    );
-    if (!isAuthenticated(req) || !isAdmin(req))
-      return {
-        props: {
-          eyewears: result.data,
-        },
-      };
-
-    return {
-      props: {
-        user: req.session.user,
-        eyewears: result.data,
-      },
-    };
-  }
-);
+export const getStaticProps = () => {
+  return {
+    props: {},
+  };
+};
 
 export default Home;
