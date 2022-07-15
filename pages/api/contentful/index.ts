@@ -1,3 +1,5 @@
+import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
+import axios from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getEyewearById } from "../../../services/contentful";
 
@@ -10,8 +12,44 @@ const contentfulRoute = async (req: NextApiRequest, res: NextApiResponse) => {
           throw new Error("Not authenticated");
         }
         const eyeWear = await getEyewearById(req.body.id);
+        const description = documentToHtmlString(eyeWear.fields.description);
+        const shopifyProduct = {
+          product: {
+            title: eyeWear.fields.name,
+            body_html: description,
+            product_type: eyeWear.fields.eyewearType,
+            variants: [
+              {
+                sku: eyeWear.fields.barcode,
+                price: eyeWear.fields.price,
+                taxable: true,
+                option1: eyeWear.fields.colorGroup,
+                option2:
+                  eyeWear.fields.eyeSize +
+                  "-" +
+                  eyeWear.fields.bridgeWidth +
+                  "-" +
+                  eyeWear.fields.templeLength,
+              },
+            ],
+            images: eyeWear.fields.pictures.map(
+              (p) => `https:${p.fields.file.url}`
+            ),
+          },
+        };
 
-        return res.status(200).json(eyeWear);
+        const product = await axios.post(
+          `${process.env.SHOPIFY_ENDPOINT}`,
+          shopifyProduct,
+          {
+            headers: {
+              "X-Shopify-Access-Token": process.env.SHOPIFY_ADMIN_TOKEN!,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        return res.status(200).json(product);
       default:
         throw Error("Not supported");
     }
