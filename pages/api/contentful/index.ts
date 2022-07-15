@@ -5,10 +5,8 @@ const contentfulRoute = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     switch (req.method) {
       case "POST":
-        console.log(req.headers["X-Optshop-Auth"]);
-        if (
-          req.headers["X-Optshop-Auth"] !== process.env.CONTENTFUL_HOOK_SECRET
-        ) {
+        console.log(req.headers.authorization);
+        if (req.headers.authorization !== process.env.CONTENTFUL_HOOK_SECRET) {
           throw new Error("Not authenticated");
         }
         const eyeWear = await getEyewearById(req.body.id);
