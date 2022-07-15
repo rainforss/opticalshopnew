@@ -1,17 +1,19 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import { getEyewearById } from "../../../services/contentful";
 
 const contentfulRoute = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     switch (req.method) {
       case "POST":
+        console.log(req.headers["X-Optshop-Auth"]);
         if (
           req.headers["X-Optshop-Auth"] !== process.env.CONTENTFUL_HOOK_SECRET
         ) {
           throw new Error("Not authenticated");
         }
-        console.log(req.body);
+        const eyeWear = await getEyewearById(req.body.id);
 
-        return res.status(200).json(req.body);
+        return res.status(200).json(eyeWear);
       default:
         throw Error("Not supported");
     }
