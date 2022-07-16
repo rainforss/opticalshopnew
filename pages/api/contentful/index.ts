@@ -7,7 +7,6 @@ const contentfulRoute = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     switch (req.method) {
       case "POST":
-        console.log(req.headers.authorization);
         if (req.headers.authorization !== process.env.CONTENTFUL_HOOK_SECRET) {
           throw new Error("Not authenticated");
         }
@@ -20,18 +19,18 @@ const contentfulRoute = async (req: NextApiRequest, res: NextApiResponse) => {
             product_type: eyeWear.fields.eyewearType,
             variants: [
               {
-                sku: eyeWear.fields.barcode,
+                barcode: eyeWear.fields.barcode,
                 price: eyeWear.fields.price,
                 taxable: true,
               },
             ],
-            images: eyeWear.fields.pictures.map(
-              (p) => `https:${p.fields.file.url}`
-            ),
+            images: eyeWear.fields.pictures.map((p) => ({
+              src: `https:${p.fields.file.url}`,
+            })),
           },
         };
 
-        const product = await axios.post(
+        const createdProduct = await axios.post(
           `${process.env.SHOPIFY_ENDPOINT}`,
           shopifyProduct,
           {
@@ -42,9 +41,9 @@ const contentfulRoute = async (req: NextApiRequest, res: NextApiResponse) => {
           }
         );
 
-        console.log(product);
+        console.log(createdProduct);
 
-        return res.status(200).json(product);
+        return res.status(200).json(createdProduct);
       default:
         throw Error("Not supported");
     }
