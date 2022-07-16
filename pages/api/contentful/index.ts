@@ -15,7 +15,7 @@ const contentfulRoute = async (req: NextApiRequest, res: NextApiResponse) => {
         }
         const eyeWear = await getEyewearById(req.body.id);
         if (!!eyeWear.fields.shopifyProductId) {
-          return res.status(204);
+          return res.status(204).json({ message: "No Content" });
         }
         const description = documentToHtmlString(eyeWear.fields.description);
         const shopifyProduct = {
