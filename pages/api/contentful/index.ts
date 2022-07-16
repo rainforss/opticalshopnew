@@ -41,9 +41,7 @@ const contentfulRoute = async (req: NextApiRequest, res: NextApiResponse) => {
           }
         );
 
-        console.log(createdProduct);
-
-        return res.status(200).json(createdProduct);
+        return res.status(200).json(createdProduct.data);
       default:
         throw Error("Not supported");
     }
