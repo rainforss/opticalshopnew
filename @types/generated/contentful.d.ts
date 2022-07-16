@@ -120,6 +120,9 @@ export interface IEyewearFields {
 
   /** Stripe Price */
   stripePrice?: string | undefined;
+
+  /** Shopify Product ID */
+  shopifyProductId?: string | undefined;
 }
 
 export interface IEyewear extends Entry<IEyewearFields> {

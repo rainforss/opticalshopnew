@@ -27,6 +27,7 @@ export type Eyewear = {
     pictures: Array<Picture>;
     stripeProduct: string;
     stripePrice: string;
+    shopifyProductId: string;
   };
 };
 

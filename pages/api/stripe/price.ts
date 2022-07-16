@@ -1,6 +1,9 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import Stripe from "stripe";
-import { getEyewearById, updateEyewear } from "../../../services/contentful";
+import {
+  getEyewearById,
+  updateEyewearStripeInfo,
+} from "../../../services/contentful";
 import {
   createPrice,
   createProduct,
@@ -40,7 +43,7 @@ const priceRoute = async (req: NextApiRequest, res: NextApiResponse) => {
             unit_amount: eyewear.fields.price * 100,
           };
           const newPrice = await createPrice(newPriceParams);
-          const updatedEyewear = await updateEyewear(
+          const updatedEyewear = await updateEyewearStripeInfo(
             eyewear.sys.id,
             newProduct.id,
             newPrice.id
@@ -61,7 +64,7 @@ const priceRoute = async (req: NextApiRequest, res: NextApiResponse) => {
           product: eyewear.fields.stripeProduct,
           unit_amount: eyewear.fields.price * 100,
         });
-        await updateEyewear(
+        await updateEyewearStripeInfo(
           eyewear.sys.id,
           eyewear.fields.stripeProduct,
           newPrice.id

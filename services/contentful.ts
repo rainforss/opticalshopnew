@@ -41,7 +41,7 @@ export const createEyewear = async (
   }
 };
 
-export const updateEyewear = async (
+export const updateEyewearStripeInfo = async (
   id: string,
   stripeProduct: string,
   stripePrice: string
@@ -52,6 +52,23 @@ export const updateEyewear = async (
     const eyewear = await environment.getEntry(id);
     eyewear.fields.stripeProduct = { "en-US": stripeProduct };
     eyewear.fields.stripePrice = { "en-US": stripePrice };
+    const updatedEyewear = await eyewear.update();
+    const publishedEyewear = await updatedEyewear.publish();
+    return publishedEyewear;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateEyewearShopifyInfo = async (
+  id: string,
+  shopifyProductId: number
+) => {
+  try {
+    const space = await client.getSpace("ku8ywade9k6u");
+    const environment = await space.getEnvironment("master");
+    const eyewear = await environment.getEntry(id);
+    eyewear.fields.shopifyProductId = { "en-US": shopifyProductId };
     const updatedEyewear = await eyewear.update();
     const publishedEyewear = await updatedEyewear.publish();
     return publishedEyewear;

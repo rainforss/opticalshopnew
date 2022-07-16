@@ -1,7 +1,10 @@
 import { documentToHtmlString } from "@contentful/rich-text-html-renderer";
 import axios from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
-import { getEyewearById } from "../../../services/contentful";
+import {
+  getEyewearById,
+  updateEyewearShopifyInfo,
+} from "../../../services/contentful";
 
 const contentfulRoute = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -11,6 +14,9 @@ const contentfulRoute = async (req: NextApiRequest, res: NextApiResponse) => {
           throw new Error("Not authenticated");
         }
         const eyeWear = await getEyewearById(req.body.id);
+        if (!!eyeWear.fields.shopifyProductId) {
+          return res.status(204);
+        }
         const description = documentToHtmlString(eyeWear.fields.description);
         const shopifyProduct = {
           product: {
@@ -41,6 +47,10 @@ const contentfulRoute = async (req: NextApiRequest, res: NextApiResponse) => {
           }
         );
 
+        const updatedEyewear = await updateEyewearShopifyInfo(
+          eyeWear.sys.id,
+          createdProduct.data.product.id.toString()
+        );
         return res.status(200).json(createdProduct.data);
       default:
         throw Error("Not supported");
