@@ -23,13 +23,6 @@ const contentfulRoute = async (req: NextApiRequest, res: NextApiResponse) => {
                 sku: eyeWear.fields.barcode,
                 price: eyeWear.fields.price,
                 taxable: true,
-                option1: eyeWear.fields.colorGroup,
-                option2:
-                  eyeWear.fields.eyeSize +
-                  "-" +
-                  eyeWear.fields.bridgeWidth +
-                  "-" +
-                  eyeWear.fields.templeLength,
               },
             ],
             images: eyeWear.fields.pictures.map(
@@ -49,11 +42,14 @@ const contentfulRoute = async (req: NextApiRequest, res: NextApiResponse) => {
           }
         );
 
+        console.log(product);
+
         return res.status(200).json(product);
       default:
         throw Error("Not supported");
     }
   } catch (error: any) {
+    console.log(error);
     if (error.message === "Not authenticated") {
       return res.status(401).json({
         error: {
